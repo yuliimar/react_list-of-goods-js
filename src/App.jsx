@@ -15,31 +15,35 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
+const arraysEqual = (a, b) =>
+  a.length === b.length && a.every((item, index) => item === b[index]);
+
 export const App = () => {
   const [sortType, setSortType] = useState(null);
   const [isReversed, setIsReversed] = useState(false);
 
   const getVisibleGoods = () => {
-    let sortedGoods = [...goodsFromServer];
+    const sortedGoods = [...goodsFromServer];
 
     if (sortType === 'alphabet') {
-      sortedGoods = sortedGoods.sort((a, b) => a.localeCompare(b));
+      sortedGoods.sort((a, b) => a.localeCompare(b));
     } else if (sortType === 'length') {
-      sortedGoods = sortedGoods.sort((a, b) => a.length - b.length);
+      sortedGoods.sort((a, b) => a.length - b.length);
     }
 
     if (isReversed) {
-      sortedGoods = sortedGoods.reverse();
+      sortedGoods.reverse();
     }
 
     return sortedGoods;
   };
 
   const visibleGoods = getVisibleGoods();
+
   const isInDefaultState =
     sortType === null &&
     !isReversed &&
-    JSON.stringify(visibleGoods) === JSON.stringify(goodsFromServer);
+    arraysEqual(visibleGoods, goodsFromServer);
 
   return (
     <div className="section content">
